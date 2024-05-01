@@ -237,7 +237,7 @@ function validateDts(opts: BuildOptions, dtsEntries: string[]): void {
       '@stencil/core/internal': [join(opts.rootDir, 'internal', 'index.d.ts')],
       '@stencil/core/internal/testing': [join(opts.rootDir, 'internal', 'testing', 'index.d.ts')],
     },
-    moduleResolution: ModuleResolutionKind.NodeJs,
+    moduleResolution: ModuleResolutionKind.Node10,
     target: ScriptTarget.ES2016,
   });
 
