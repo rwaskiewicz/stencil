@@ -1,16 +1,14 @@
 import { toDashCase } from '@utils';
 
-import { LogLevel } from '../../declarations';
 import {
   BOOLEAN_CLI_FLAGS,
   BOOLEAN_STRING_CLI_FLAGS,
-  BooleanStringCLIFlag,
-  ConfigFlags,
+  LogLevel,
   NUMBER_CLI_FLAGS,
   STRING_ARRAY_CLI_FLAGS,
   STRING_CLI_FLAGS,
-  StringArrayCLIFlag,
-} from '../config-flags';
+} from '../../declarations';
+import { BooleanStringCLIFlag, ConfigFlags, StringArrayCLIFlag } from '../config-flags';
 import { Empty, parseEqualsArg, parseFlags } from '../parse-flags';
 
 describe('parseFlags', () => {

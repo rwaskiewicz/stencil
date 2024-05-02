@@ -26,8 +26,10 @@ export const getTsOptionsToExtend = (config: d.ValidatedConfig): ts.CompilerOpti
     // if the `DIST_TYPES` output target is present then we'd like to emit
     // declaration files
     declaration: config.outputTargets.some(isOutputTargetDistTypes),
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Node10,
+    module: ts.ModuleKind.Node16,
+    moduleResolution:
+      ((config.tsconfig as any)?.compilerOptions as ts.CompilerOptions)?.moduleResolution ??
+      ts.ModuleResolutionKind.Node16,
     noEmitOnError: false,
     outDir: config.cacheDir || config.sys.tmpDirSync(),
     sourceMap: config.sourceMap,

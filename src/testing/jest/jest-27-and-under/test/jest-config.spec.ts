@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types';
-import { BOOLEAN_CLI_FLAGS } from '@stencil/core/cli';
 import type * as d from '@stencil/core/declarations';
+import { BOOLEAN_CLI_FLAGS } from '@stencil/core/declarations';
 import { mockValidatedConfig } from '@stencil/core/testing';
 import path from 'path';
 

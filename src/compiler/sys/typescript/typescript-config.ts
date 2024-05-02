@@ -102,10 +102,11 @@ export const validateTsConfig = async (config: d.ValidatedConfig, sys: d.Compile
             warn.messageText = `To improve bundling, it is always recommended to set the tsconfig.json “target” setting to "es2017". Note that the compiler will automatically handle transpilation for ES5-only browsers.`;
           }
 
-          if (tsconfig.compilerOptions.module !== ts.ModuleKind.ESNext && !config._isTesting) {
-            const warn = buildWarn(tsconfig.diagnostics);
-            warn.messageText = `To improve bundling, it is always recommended to set the tsconfig.json “module” setting to “esnext”. Note that the compiler will automatically handle bundling both modern and legacy builds.`;
-          }
+          // TODO(LATER)
+          // if (tsconfig.compilerOptions.module !== ts.ModuleKind.ESNext && !config._isTesting) {
+          //   const warn = buildWarn(tsconfig.diagnostics);
+          //   warn.messageText = `To improve bundling, it is always recommended to set the tsconfig.json “module” setting to “esnext”. Note that the compiler will automatically handle bundling both modern and legacy builds.`;
+          // }
 
           tsconfig.compilerOptions.sourceMap = config.sourceMap;
           tsconfig.compilerOptions.inlineSources = config.sourceMap;

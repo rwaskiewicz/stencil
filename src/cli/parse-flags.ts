@@ -1,19 +1,18 @@
 import { readOnlyArrayHasStringMember, toCamelCase } from '@utils';
 
-import { LOG_LEVELS, LogLevel, TaskCommand } from '../declarations';
 import {
   BOOLEAN_CLI_FLAGS,
   BOOLEAN_STRING_CLI_FLAGS,
-  CLI_FLAG_ALIASES,
-  CLI_FLAG_REGEX,
-  ConfigFlags,
-  createConfigFlags,
   LOG_LEVEL_CLI_FLAGS,
+  LOG_LEVELS,
+  LogLevel,
   NUMBER_CLI_FLAGS,
   STRING_ARRAY_CLI_FLAGS,
   STRING_CLI_FLAGS,
   STRING_NUMBER_CLI_FLAGS,
-} from './config-flags';
+  TaskCommand,
+} from '../declarations';
+import { CLI_FLAG_ALIASES, CLI_FLAG_REGEX, ConfigFlags, createConfigFlags } from './config-flags';
 
 /**
  * Parse command line arguments into a structured `ConfigFlags` object

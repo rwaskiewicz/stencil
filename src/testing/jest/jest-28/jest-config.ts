@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types';
-import { BOOLEAN_CLI_FLAGS } from '@stencil/core/cli';
 import type * as d from '@stencil/core/internal';
+import { BOOLEAN_CLI_FLAGS } from '@stencil/core/internal';
 import { isString } from '@utils';
 
 import { Jest28Stencil } from './jest-facade';

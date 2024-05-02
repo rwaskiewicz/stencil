@@ -1,4 +1,3 @@
-import type { ConfigFlags } from '../cli/config-flags';
 import type { PrerenderUrlResults, PrintLine } from '../internal';
 import type { BuildCtx, CompilerCtx } from './stencil-private';
 import type { JsonDocs } from './stencil-public-docs';
@@ -690,6 +689,283 @@ export type TaskCommand =
   | 'version';
 
 export type PageReloadStrategy = 'hmr' | 'pageReload' | null;
+
+/**
+ * All the Boolean options supported by the Stencil CLI
+ */
+export const BOOLEAN_CLI_FLAGS = [
+  'build',
+  'cache',
+  'checkVersion',
+  'ci',
+  'compare',
+  'debug',
+  'dev',
+  'devtools',
+  'docs',
+  'e2e',
+  'es5',
+  'esm',
+  'help',
+  'log',
+  'open',
+  'prerender',
+  'prerenderExternal',
+  'prod',
+  'profile',
+  'serviceWorker',
+  'screenshot',
+  'serve',
+  'skipNodeCheck',
+  'spec',
+  'ssr',
+  'stats',
+  'updateScreenshot',
+  'verbose',
+  'version',
+  'watch',
+
+  // JEST CLI OPTIONS
+  'all',
+  'automock',
+  'bail',
+  // 'cache', Stencil already supports this argument
+  'changedFilesWithAncestor',
+  // 'ci', Stencil already supports this argument
+  'clearCache',
+  'clearMocks',
+  'collectCoverage',
+  'color',
+  'colors',
+  'coverage',
+  // 'debug', Stencil already supports this argument
+  'detectLeaks',
+  'detectOpenHandles',
+  'errorOnDeprecated',
+  'expand',
+  'findRelatedTests',
+  'forceExit',
+  'init',
+  'injectGlobals',
+  'json',
+  'lastCommit',
+  'listTests',
+  'logHeapUsage',
+  'noStackTrace',
+  'notify',
+  'onlyChanged',
+  'onlyFailures',
+  'passWithNoTests',
+  'resetMocks',
+  'resetModules',
+  'restoreMocks',
+  'runInBand',
+  'runTestsByPath',
+  'showConfig',
+  'silent',
+  'skipFilter',
+  'testLocationInResults',
+  'updateSnapshot',
+  'useStderr',
+  // 'verbose', Stencil already supports this argument
+  // 'version', Stencil already supports this argument
+  // 'watch', Stencil already supports this argument
+  'watchAll',
+  'watchman',
+] as const;
+
+/**
+ * All the Number options supported by the Stencil CLI
+ */
+export const NUMBER_CLI_FLAGS = [
+  'port',
+  // JEST CLI ARGS
+  'maxConcurrency',
+  'testTimeout',
+] as const;
+
+/**
+ * All the String options supported by the Stencil CLI
+ */
+export const STRING_CLI_FLAGS = [
+  'address',
+  'config',
+  'docsApi',
+  'docsJson',
+  'emulate',
+  'root',
+  'screenshotConnector',
+
+  // JEST CLI ARGS
+  'cacheDirectory',
+  'changedSince',
+  'collectCoverageFrom',
+  // 'config', Stencil already supports this argument
+  'coverageDirectory',
+  'coverageThreshold',
+  'env',
+  'filter',
+  'globalSetup',
+  'globalTeardown',
+  'globals',
+  'haste',
+  'moduleNameMapper',
+  'notifyMode',
+  'outputFile',
+  'preset',
+  'prettierPath',
+  'resolver',
+  'rootDir',
+  'runner',
+  'testEnvironment',
+  'testEnvironmentOptions',
+  'testFailureExitCode',
+  'testNamePattern',
+  'testResultsProcessor',
+  'testRunner',
+  'testSequencer',
+  'testURL',
+  'timers',
+  'transform',
+] as const;
+
+export const STRING_ARRAY_CLI_FLAGS = [
+  'collectCoverageOnlyFrom',
+  'coveragePathIgnorePatterns',
+  'coverageReporters',
+  'moduleDirectories',
+  'moduleFileExtensions',
+  'modulePathIgnorePatterns',
+  'modulePaths',
+  'projects',
+  'reporters',
+  'roots',
+  'selectProjects',
+  'setupFiles',
+  'setupFilesAfterEnv',
+  'snapshotSerializers',
+  'testMatch',
+  'testPathIgnorePatterns',
+  'testPathPattern',
+  'testRegex',
+  'transformIgnorePatterns',
+  'unmockedModulePathPatterns',
+  'watchPathIgnorePatterns',
+] as const;
+
+/**
+ * All the CLI arguments which may have string or number values
+ *
+ * `maxWorkers` is an argument which is used both by Stencil _and_ by Jest,
+ * which means that we need to support parsing both string and number values.
+ */
+export const STRING_NUMBER_CLI_FLAGS = ['maxWorkers'] as const;
+
+/**
+ * All the CLI arguments which may have boolean or string values.
+ */
+export const BOOLEAN_STRING_CLI_FLAGS = [
+  /**
+   * `headless` is an argument passed through to Puppeteer (which is passed to Chrome) for end-to-end testing.
+   * Prior to Chrome v112, `headless` was treated like a boolean flag. Starting with Chrome v112, 'new' is an accepted
+   * option to support Chrome's new headless mode. In order to support this option in Stencil, both the boolean and
+   * string versions of the flag must be accepted.
+   *
+   * {@see https://developer.chrome.com/articles/new-headless/}
+   */
+  'headless',
+] as const;
+
+/**
+ * All the LogLevel-type options supported by the Stencil CLI
+ *
+ * This is a bit silly since there's only one such argument atm,
+ * but this approach lets us make sure that we're handling all
+ * our arguments in a type-safe way.
+ */
+export const LOG_LEVEL_CLI_FLAGS = ['logLevel'] as const;
+
+/**
+ * Given two types `K` and `T` where `K` extends `ReadonlyArray<string>`,
+ * construct a type which maps the strings in `K` as keys to values of type `T`.
+ *
+ * Because we use types derived this way to construct an interface (`ConfigFlags`)
+ * for which we want optional keys, we make all the properties optional (w/ `'?'`)
+ * and possibly null.
+ */
+type ObjectFromKeys<K extends ReadonlyArray<string>, T> = {
+  [key in K[number]]?: T | null;
+};
+
+/**
+ * Type containing the possible Boolean configuration flags, to be included
+ * in ConfigFlags, below
+ */
+type BooleanConfigFlags = ObjectFromKeys<typeof BOOLEAN_CLI_FLAGS, boolean>;
+
+/**
+ * Type containing the possible String configuration flags, to be included
+ * in ConfigFlags, below
+ */
+type StringConfigFlags = ObjectFromKeys<typeof STRING_CLI_FLAGS, string>;
+
+/**
+ * Type containing the possible String Array configuration flags. This is
+ * one of the 'constituent types' for `ConfigFlags`.
+ */
+type StringArrayConfigFlags = ObjectFromKeys<typeof STRING_ARRAY_CLI_FLAGS, string[]>;
+
+/**
+ * Type containing the possible numeric configuration flags, to be included
+ * in ConfigFlags, below
+ */
+type NumberConfigFlags = ObjectFromKeys<typeof NUMBER_CLI_FLAGS, number>;
+
+/**
+ * Type containing the configuration flags which may be set to either string
+ * or number values.
+ */
+type StringNumberConfigFlags = ObjectFromKeys<typeof STRING_NUMBER_CLI_FLAGS, string | number>;
+
+/**
+ * Type containing the configuration flags which may be set to either string
+ * or boolean values.
+ */
+type BooleanStringConfigFlags = ObjectFromKeys<typeof BOOLEAN_STRING_CLI_FLAGS, boolean | string>;
+
+/**
+ * Type containing the possible LogLevel configuration flags, to be included
+ * in ConfigFlags, below
+ */
+type LogLevelFlags = ObjectFromKeys<typeof LOG_LEVEL_CLI_FLAGS, LogLevel>;
+
+/**
+ * The configuration flags which can be set by the user on the command line.
+ * This interface captures both known arguments (which are enumerated and then
+ * parsed according to their types) and unknown arguments which the user may
+ * pass at the CLI.
+ *
+ * Note that this interface is constructed by extending `BooleanConfigFlags`,
+ * `StringConfigFlags`, etc. These types are in turn constructed from types
+ * extending `ReadonlyArray<string>` which we declare in another module. This
+ * allows us to record our known CLI arguments in one place, using a
+ * `ReadonlyArray<string>` to get both a type-level representation of what CLI
+ * options we support and a runtime list of strings which can be used to match
+ * on actual flags passed by the user.
+ */
+export interface ConfigFlags
+  extends BooleanConfigFlags,
+    StringConfigFlags,
+    StringArrayConfigFlags,
+    NumberConfigFlags,
+    StringNumberConfigFlags,
+    BooleanStringConfigFlags,
+    LogLevelFlags {
+  task: TaskCommand | null;
+  args: string[];
+  knownArgs: string[];
+  unknownArgs: string[];
+}
 
 /**
  * The prerender config is used when prerendering a `www` output target.
