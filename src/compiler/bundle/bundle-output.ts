@@ -1,7 +1,7 @@
-import rollupCommonjsPlugin from '@rollup/plugin-commonjs';
-import rollupJsonPlugin from '@rollup/plugin-json';
+// import rollupCommonjsPlugin from '@rollup/plugin-commonjs';
+// import rollupJsonPlugin from '@rollup/plugin-json';
 import rollupNodeResolvePlugin from '@rollup/plugin-node-resolve';
-import rollupReplacePlugin from '@rollup/plugin-replace';
+// import rollupReplacePlugin from '@rollup/plugin-replace';
 import { createOnWarnFn, isString, loadRollupDiagnostics } from '@utils';
 import { PluginContext, rollup, RollupOptions, TreeshakingOptions } from 'rollup';
 
@@ -12,15 +12,15 @@ import { appDataPlugin } from './app-data-plugin';
 import type { BundleOptions } from './bundle-interface';
 import { coreResolvePlugin } from './core-resolve-plugin';
 import { devNodeModuleResolveId } from './dev-node-module-resolve';
-import { extFormatPlugin } from './ext-format-plugin';
-import { extTransformsPlugin } from './ext-transforms-plugin';
-import { fileLoadPlugin } from './file-load-plugin';
+// import { extFormatPlugin } from './ext-format-plugin';
+// import { extTransformsPlugin } from './ext-transforms-plugin';
+// import { fileLoadPlugin } from './file-load-plugin';
 import { loaderPlugin } from './loader-plugin';
-import { pluginHelper } from './plugin-helper';
-import { serverPlugin } from './server-plugin';
-import { resolveIdWithTypeScript, typescriptPlugin } from './typescript-plugin';
+// import { pluginHelper } from './plugin-helper';
+// import { serverPlugin } from './server-plugin';
+import {  typescriptPlugin } from './typescript-plugin';
 import { userIndexPlugin } from './user-index-plugin';
-import { workerPlugin } from './worker-plugin';
+// import { workerPlugin } from './worker-plugin';
 
 export const bundleOutput = async (
   config: d.ValidatedConfig,
@@ -105,7 +105,9 @@ export const getRollupOptions = (
     };
   }
 
+  // @ts-ignore
   const beforePlugins = config.rollupPlugins.before || [];
+  // @ts-ignore
   const afterPlugins = config.rollupPlugins.after || [];
   const rollupOptions: RollupOptions = {
     input: bundleOpts.inputs,
@@ -120,29 +122,29 @@ export const getRollupOptions = (
       loaderPlugin(bundleOpts.loader),
       userIndexPlugin(config, compilerCtx),
       typescriptPlugin(compilerCtx, bundleOpts, config),
-      extFormatPlugin(config),
-      extTransformsPlugin(config, compilerCtx, buildCtx, bundleOpts),
-      workerPlugin(config, compilerCtx, buildCtx, bundleOpts.platform, !!bundleOpts.inlineWorkers),
-      serverPlugin(config, bundleOpts.platform),
-      ...beforePlugins,
-      nodeResolvePlugin,
-      resolveIdWithTypeScript(config, compilerCtx),
-      rollupCommonjsPlugin({
-        include: /node_modules/,
-        sourceMap: config.sourceMap,
-        transformMixedEsModules: false,
-        ...config.commonjs,
-      }),
-      ...afterPlugins,
-      pluginHelper(config, buildCtx, bundleOpts.platform),
-      rollupJsonPlugin({
-        preferConst: true,
-      }),
-      rollupReplacePlugin({
-        'process.env.NODE_ENV': config.devMode ? '"development"' : '"production"',
-        preventAssignment: true,
-      }),
-      fileLoadPlugin(compilerCtx.fs),
+      // extFormatPlugin(config),
+      // extTransformsPlugin(config, compilerCtx, buildCtx, bundleOpts),
+      // workerPlugin(config, compilerCtx, buildCtx, bundleOpts.platform, !!bundleOpts.inlineWorkers),
+      // serverPlugin(config, bundleOpts.platform),
+      // ...beforePlugins,
+      // nodeResolvePlugin,
+      // resolveIdWithTypeScript(config, compilerCtx),
+      // rollupCommonjsPlugin({
+      //   include: /node_modules/,
+      //   sourceMap: config.sourceMap,
+      //   transformMixedEsModules: false,
+      //   ...config.commonjs,
+      // }),
+      // ...afterPlugins,
+      // pluginHelper(config, buildCtx, bundleOpts.platform),
+      // rollupJsonPlugin({
+      //   preferConst: true,
+      // }),
+      // rollupReplacePlugin({
+      //   'process.env.NODE_ENV': config.devMode ? '"development"' : '"production"',
+      //   preventAssignment: true,
+      // }),
+      // fileLoadPlugin(compilerCtx.fs),
     ],
 
     treeshake: getTreeshakeOption(config, bundleOpts),

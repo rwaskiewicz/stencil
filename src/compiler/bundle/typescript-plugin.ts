@@ -1,5 +1,5 @@
 import { isString, normalizeFsPath } from '@utils';
-import { basename, isAbsolute } from 'path';
+import { basename, extname, isAbsolute } from 'path';
 import type { LoadResult, Plugin, TransformResult } from 'rollup';
 import ts from 'typescript';
 
@@ -58,13 +58,18 @@ export const typescriptPlugin = (
         const fsFilePath = normalizeFsPath(id);
         const mod = getModule(compilerCtx, fsFilePath);
         if (mod && mod.cmps.length > 0) {
+          const originalSourceFilePath = mod.sourceFilePath;
+          const sourcePath = extname(originalSourceFilePath) === '.tsx' ? originalSourceFilePath.substring(0, originalSourceFilePath.lastIndexOf(".")) + ".mtsx" : originalSourceFilePath
+          // TODO: Can we sub out another value? IDK
+          // TODO: Where did that MS discussion go? - https://github.com/microsoft/TypeScript/issues/53022
           const tsResult = ts.transpileModule(mod.staticSourceFileText, {
             compilerOptions: config.tsCompilerOptions,
-            fileName: mod.sourceFilePath,
+            fileName: sourcePath,
             transformers: {
               before: bundleOpts.customBeforeTransformers ?? [],
             },
           });
+
           const sourceMap: d.SourceMap = tsResult.sourceMapText ? JSON.parse(tsResult.sourceMapText) : null;
           return { code: tsResult.outputText, map: sourceMap };
         }

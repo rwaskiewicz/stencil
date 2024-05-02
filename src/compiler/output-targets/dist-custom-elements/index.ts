@@ -208,6 +208,7 @@ export const addCustomElementInputs = (
       indexExports.push(`export { ${exportName} } from '${coreKey}';`);
     } else {
       // the `importName` may collide with the `exportName`, alias it just in case it does with `importAs`
+      // TODO(NOW): This is the line that it doesn't like
       exp.push(
         `import { ${importName} as ${importAs}, defineCustomElement as cmpDefCustomEle } from '${cmp.sourceFilePath}';`,
       );
