@@ -25,7 +25,7 @@ export const validateTsConfig = async (config: d.ValidatedConfig, sys: d.Compile
   };
 
   try {
-    const readTsConfig = await getTsConfigPath(config, sys, init);
+    const readTsConfig = await getTsConfigPathAndContents(config, sys, init);
     if (!readTsConfig) {
       const diagnostic = buildError(tsconfig.diagnostics);
       diagnostic.header = `Missing tsconfig.json`;
@@ -120,7 +120,22 @@ export const validateTsConfig = async (config: d.ValidatedConfig, sys: d.Compile
   return tsconfig;
 };
 
-const getTsConfigPath = async (
+/**
+ * Derive the path to a `tsconfig.json` file from the provided {@link ValidatedConfig} and read its contents.
+ *
+ * If no path is provided, fallback to a `tsconfig.json` that is assumed to be at the root of the Stencil project.
+ *
+ * If an attempt at reading the file at the path (provided or as a fallback), generate sensible defaults based on the
+ * {@link LoadConfigInit#initTsConfig} value. Setting this value to `true` will generate sensible defaults. Otherwise,
+ * no fallback will be created.
+ *
+ * @param config the Stencil configuration to derive the path to a `tsconfig.hs` from
+ * @param sys the {@link CompilerSystem} used to read files from disk
+ * @param init initialization object used to determine if a `tsconfig.json` with sensible defaults should be generated
+ * as a fallback.
+ * @returns an object containing the path to a `tsconfig.json` file and its contents, otherwise `null`
+ */
+const getTsConfigPathAndContents = async (
   config: d.ValidatedConfig,
   sys: d.CompilerSystem,
   init: d.LoadConfigInit,
@@ -161,7 +176,12 @@ const getTsConfigPath = async (
   return tsconfig;
 };
 
-const createDefaultTsConfig = (config: d.ValidatedConfig) =>
+/**
+ * Generates a `tsconfig.json` for Stencil projects for cases where a provided `tsconfig.json` file could not be read
+ * @param config the Stencil configuration, which is the source of some default field values
+ * @returns a stringified version of the `tsconfig.json` options
+ */
+const createDefaultTsConfig = (config: d.ValidatedConfig): string =>
   JSON.stringify(
     {
       compilerOptions: {
