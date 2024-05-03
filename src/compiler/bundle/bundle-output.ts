@@ -59,6 +59,7 @@ export const getRollupOptions = (
   bundleOpts: BundleOptions,
 ): RollupOptions => {
   const customResolveOptions = createCustomResolverAsync(config.sys, compilerCtx.fs, [
+    '.mtsx',
     '.tsx',
     '.ts',
     '.js',

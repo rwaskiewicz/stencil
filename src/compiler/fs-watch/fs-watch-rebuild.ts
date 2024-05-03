@@ -34,7 +34,7 @@ const getExt = (filePath: string): string | null => {
 /**
  * Script extensions which we want to be able to recognize
  */
-const SCRIPT_EXT = ['ts', 'tsx', 'js', 'jsx'];
+const SCRIPT_EXT = ['mtsx', 'ts', 'tsx', 'js', 'jsx'];
 
 /**
  * Helper to check if a filepath has a script extension
