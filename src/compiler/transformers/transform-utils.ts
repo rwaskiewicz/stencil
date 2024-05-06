@@ -5,7 +5,7 @@ import type * as d from '../../declarations';
 import { StencilStaticGetter } from './decorators-to-static/decorators-constants';
 import { addToLibrary, findTypeWithName, getHomeModule, getOriginalTypeName } from './type-library';
 
-import {extname} from 'path';
+// import {extname} from 'path';
 
 export const getScriptTarget = () => {
   // using a fn so the browser compiler doesn't require the global ts for startup
@@ -688,10 +688,10 @@ export const getModuleFromSourceFile = (
   compilerCtx: d.CompilerCtx,
   tsSourceFile: ts.SourceFile,
 ): d.Module | undefined => {
-  let filename = tsSourceFile.fileName;
-  if (extname(filename) === '.mtsx') {
-    filename = filename.replace(/.mtsx$/, '.tsx');
-  }
+  const filename = tsSourceFile.fileName;
+  // if (extname(filename) === '.mtsx') {
+  //   filename = filename.replace(/.mtsx$/, '.tsx');
+  // }
   const sourceFilePath = normalizePath(filename);
   const moduleFile = compilerCtx.moduleMap.get(sourceFilePath);
   if (moduleFile != null) {

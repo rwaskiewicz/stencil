@@ -1,4 +1,4 @@
-import { isOutputTargetDistTypes } from '@utils';
+import {isOutputTargetDistTypes} from '@utils';
 import ts from 'typescript';
 
 import type * as d from '../../declarations';
@@ -55,6 +55,8 @@ export const getTsOptionsToExtend = (config: d.ValidatedConfig): ts.CompilerOpti
     experimentalDecorators: true,
     // if the `DIST_TYPES` output target is present then we'd like to emit
     // declaration files
+    // moduleDetection: ts.ModuleDetectionKind.Force,
+    jsx: ts.JsxEmit.ReactJSX,
     declaration: config.outputTargets.some(isOutputTargetDistTypes),
     module: (config.tsCompilerOptions as ts.CompilerOptions)?.module ?? ts.ModuleKind.Node16,
     moduleResolution:
